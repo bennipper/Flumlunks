@@ -1,0 +1,61 @@
+.screen {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: var(--space-5);
+}
+.invite {
+  color: var(--slate);
+  font-size: var(--fs-arm);
+  margin: 0 0 var(--space-4);
+}
+.list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+.card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  background: var(--chalk-sunk);
+  border-left: 6px solid var(--slate);
+}
+.played {
+  border-left-color: var(--enamel);
+}
+.text {
+  display: flex;
+  flex-direction: column;
+}
+.animal {
+  font-family: var(--font-display);
+  text-transform: uppercase;
+  font-size: var(--fs-lead);
+  color: var(--ink);
+}
+.zone {
+  font-size: 15px;
+  color: var(--slate);
+}
+.tagPlayed,
+.tagNot {
+  font-family: var(--font-display);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  font-size: 15px;
+  padding: var(--space-2) var(--space-3);
+}
+.tagPlayed {
+  background: var(--enamel);
+  color: var(--on-enamel);
+}
+.tagNot {
+  color: var(--slate);
+  border: 2px solid var(--hairline-strong);
+}

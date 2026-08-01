@@ -1,0 +1,66 @@
+/*
+ * Flumlunk design tokens — British enamel zoo signage (BUILD.md §11).
+ * Designed for an adult, one-handed, in bright daylight. Not for children's eyes.
+ */
+
+:root {
+  /* Palette — vitreous enamel. Do not add colours; every colour has a job. */
+  --ink: #10261e; /* near-black bottle green — text, primary surfaces */
+  --enamel: #0f5c3f; /* deep green — headers, chrome */
+  --chalk: #f7f5ee; /* off-white — background */
+  --signal: #e8541f; /* vermilion — actions only, never decorative */
+  --brass: #b8892b; /* badges only, nowhere else */
+  --slate: #5c6b63; /* secondary text, disabled */
+
+  /* Derived surfaces — kept sparse and high-contrast for daylight. */
+  --chalk-sunk: #ece9dd; /* inset panels on chalk */
+  --enamel-deep: #0a3f2b; /* pressed / shadow of enamel */
+  --hairline: rgba(16, 38, 30, 0.14);
+  --hairline-strong: rgba(16, 38, 30, 0.28);
+  --on-enamel: #f7f5ee; /* text on enamel green */
+  --on-signal: #fdf4ef; /* text on vermilion */
+
+  /* Type. Display = condensed grotesque, uppercase. Body = humanist sans. */
+  --font-display: "Oswald", "Arial Narrow", "Roboto Condensed",
+    "Helvetica Neue Condensed", sans-serif;
+  --font-body: "Inter", system-ui, -apple-system, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif;
+
+  /* Body 17pt minimum, 20pt at arm's length (BUILD.md §11). */
+  --fs-body: 17px;
+  --fs-arm: 20px;
+  --fs-lead: 24px;
+  --fs-title: 34px;
+  --fs-hero: 46px;
+
+  /* Structural surfaces = zero radius; tap targets = fully round. */
+  --radius-surface: 0;
+  --radius-tap: 999px;
+
+  /* Minimum tap target 56x56 (BUILD.md §11). */
+  --tap-min: 56px;
+
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+
+  --shadow-pin: 0 1px 0 rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.35);
+
+  --ease: cubic-bezier(0.2, 0, 0, 1);
+
+  color-scheme: light;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}

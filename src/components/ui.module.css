@@ -1,0 +1,100 @@
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  min-height: var(--tap-min);
+  min-width: var(--tap-min);
+  padding: 0 var(--space-5);
+  border: 2px solid transparent;
+  border-radius: var(--radius-tap);
+  font-family: var(--font-body);
+  font-size: var(--fs-arm);
+  font-weight: 600;
+  line-height: 1;
+  text-align: center;
+  transition: transform 120ms var(--ease), background 120ms var(--ease);
+}
+.btn:active {
+  transform: scale(0.97);
+}
+
+.primary {
+  background: var(--signal);
+  color: var(--on-signal);
+}
+.secondary {
+  background: transparent;
+  color: var(--ink);
+  border-color: var(--hairline-strong);
+}
+.enamel {
+  background: var(--enamel);
+  color: var(--on-enamel);
+}
+.ghost {
+  background: var(--chalk-sunk);
+  color: var(--ink);
+}
+.block {
+  width: 100%;
+}
+.large {
+  min-height: 68px;
+  font-size: var(--fs-lead);
+}
+
+.topbar {
+  background: var(--enamel);
+  color: var(--on-enamel);
+  padding: env(safe-area-inset-top) var(--space-5) 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 64px;
+  flex: none;
+}
+.topbarTitle {
+  font-family: var(--font-display);
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  font-size: var(--fs-title);
+}
+.topbarPad {
+  padding-top: max(env(safe-area-inset-top), 8px);
+  padding-bottom: 8px;
+}
+
+.tabbar {
+  display: flex;
+  border-top: 2px solid var(--enamel);
+  background: var(--chalk);
+  flex: none;
+  padding-bottom: env(safe-area-inset-bottom);
+}
+.tab {
+  flex: 1;
+  min-height: var(--tap-min);
+  background: transparent;
+  border: none;
+  color: var(--slate);
+  font-family: var(--font-display);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  font-size: 18px;
+  padding: var(--space-3) 0;
+}
+.tabActive {
+  color: var(--enamel);
+  box-shadow: inset 0 3px 0 var(--signal);
+}
+
+.screen {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+}
+.pad {
+  padding: var(--space-5);
+}

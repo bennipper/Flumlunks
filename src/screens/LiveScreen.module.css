@@ -1,0 +1,139 @@
+.screen {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: var(--space-4) var(--space-5) var(--space-6);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+.status {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  color: var(--on-enamel);
+  font-size: 15px;
+  font-weight: 600;
+}
+.dotOn,
+.dotOff {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  display: inline-block;
+}
+.dotOn {
+  background: #7fd1a8;
+}
+.dotOff {
+  background: var(--signal);
+}
+
+.now {
+  background: var(--chalk-sunk);
+  border-left: 6px solid var(--enamel);
+  padding: var(--space-5);
+}
+.card {
+  font-family: var(--font-display);
+  text-transform: uppercase;
+  font-size: var(--fs-hero);
+  line-height: 1;
+  color: var(--ink);
+}
+.cardEmpty {
+  font-family: var(--font-display);
+  text-transform: uppercase;
+  font-size: var(--fs-title);
+  color: var(--slate);
+}
+.beat {
+  margin-top: var(--space-3);
+  font-size: var(--fs-arm);
+  color: var(--ink);
+}
+.mic {
+  margin-top: var(--space-4);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-weight: 600;
+  color: var(--signal);
+}
+.micDot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--signal);
+  animation: pulse 1s var(--ease) infinite;
+}
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.3;
+  }
+}
+.taps {
+  margin-top: var(--space-5);
+}
+.tapsLabel {
+  font-family: var(--font-display);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-size: 14px;
+  color: var(--slate);
+  margin-bottom: var(--space-2);
+}
+.tapRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+.block {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+.h {
+  font-family: var(--font-display);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  font-size: 20px;
+  color: var(--enamel);
+  margin: 0;
+}
+.badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+}
+.badgeItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-1);
+  width: 84px;
+}
+.badgeName {
+  font-size: 13px;
+  text-align: center;
+  color: var(--slate);
+  line-height: 1.1;
+}
+.empty {
+  color: var(--slate);
+  font-size: 15px;
+  margin: 0;
+}
+.slider {
+  width: 100%;
+  accent-color: var(--signal);
+  height: var(--tap-min);
+}
+.endWrap {
+  margin-top: var(--space-3);
+}

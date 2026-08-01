@@ -1,0 +1,78 @@
+@import "./tokens.css";
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--chalk);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: var(--fs-body);
+  line-height: 1.45;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  /* No accidental overscroll bounce revealing white on a phone. */
+  overscroll-behavior: none;
+}
+
+#root {
+  /* Phone viewport is the only one that matters (BUILD.md §9). Centre a phone
+     frame on wider screens so desktop is usable but not designed-for. */
+  display: flex;
+  justify-content: center;
+  background: var(--enamel-deep);
+}
+
+.app-frame {
+  width: 100%;
+  max-width: 480px;
+  min-height: 100dvh;
+  background: var(--chalk);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-display);
+  text-transform: uppercase;
+  letter-spacing: 0.01em;
+  font-weight: 600;
+  margin: 0;
+  line-height: 1.05;
+}
+
+button {
+  font-family: var(--font-body);
+  font-size: var(--fs-arm);
+  cursor: pointer;
+}
+
+:focus-visible {
+  outline: 3px solid var(--signal);
+  outline-offset: 2px;
+}
+
+a {
+  color: var(--enamel);
+}
+
+/* Utility: the app never shows a horizontal scrollbar. */
+img,
+canvas,
+svg {
+  max-width: 100%;
+}

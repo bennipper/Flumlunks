@@ -1,0 +1,21 @@
+.strip {
+  display: flex;
+  gap: var(--space-2);
+  overflow-x: auto;
+  padding-bottom: var(--space-2);
+  -webkit-overflow-scrolling: touch;
+}
+.thumb,
+.thumbLoading {
+  width: 84px;
+  height: 105px;
+  flex: none;
+  object-fit: cover;
+  background: var(--chalk-sunk);
+  border: 2px solid var(--enamel);
+}
+.empty {
+  color: var(--slate);
+  font-size: 15px;
+  margin: 0;
+}

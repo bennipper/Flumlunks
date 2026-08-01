@@ -1,0 +1,277 @@
+{
+  "id": "twycross",
+  "version": "0.1.0-draft",
+  "venueName": "Twycross Zoo",
+  "approvedBy": "SPECULATIVE — not yet reviewed by Twycross Conservation Education Rangers",
+  "approvedAt": "2026-08-01T00:00:00.000Z",
+  "vocabulary": [
+    "yes", "no", "one", "two", "three",
+    "bonobo", "gorilla", "gibbon", "leopard", "meerkat", "giraffe", "penguin",
+    "quiet", "clap", "roar", "up", "down", "big", "small",
+    "spots", "tall", "fish", "sleep", "eat", "hello"
+  ],
+  "cards": [
+    {
+      "id": "bonobo",
+      "animal": "Bonobo",
+      "zone": "Bonobo Forest",
+      "keyword": "bonobo",
+      "noiseSensitive": true,
+      "badgeId": "bonobo-badge",
+      "core": [
+        { "kind": "recognition", "id": "bonobo_r1", "audioId": "bonobo_r1" },
+        { "kind": "lookFor", "id": "bonobo_l1", "audioId": "bonobo_l1", "notVisibleAudioId": "bonobo_l1_nv" },
+        { "kind": "fact", "id": "bonobo_f1", "audioId": "bonobo_f1", "learnedLine": "Bonobos share their food to keep everyone calm." },
+        { "kind": "energy", "id": "bonobo_e1", "audioId": "bonobo_e1", "mode": "quiet", "threshold": 0.2, "successAudioId": "bonobo_e1_s" },
+        { "kind": "yesNo", "id": "bonobo_yn1", "audioId": "bonobo_yn1", "yesAudioId": "bonobo_yn1_y", "noAudioId": "bonobo_yn1_n" },
+        { "kind": "photo", "id": "bonobo_p1", "audioId": "bonobo_p1", "prompt": "Stand where your grown-up can see the bonobos behind you. Reach one hand out slow and gentle, the way a bonobo greets a friend. Hold me so I'm in it too.", "style": "action" },
+        { "kind": "badge", "id": "bonobo_b1", "audioId": "bonobo_b1" }
+      ],
+      "deep": [
+        { "kind": "fact", "id": "bonobo_d1", "audioId": "bonobo_d1", "learnedLine": "Bonobos can walk on two legs like me." },
+        { "kind": "signHunt", "id": "bonobo_d2", "audioId": "bonobo_d2", "word": "quiet" }
+      ]
+    },
+    {
+      "id": "gorilla",
+      "animal": "Gorilla",
+      "zone": "Gorilla Forest",
+      "keyword": "gorilla",
+      "noiseSensitive": true,
+      "badgeId": "gorilla-badge",
+      "core": [
+        { "kind": "recognition", "id": "gorilla_r1", "audioId": "gorilla_r1" },
+        { "kind": "lookFor", "id": "gorilla_l1", "audioId": "gorilla_l1", "notVisibleAudioId": "gorilla_l1_nv" },
+        { "kind": "fact", "id": "gorilla_f1", "audioId": "gorilla_f1", "learnedLine": "A big gorilla with a silver back is the one in charge." },
+        { "kind": "energy", "id": "gorilla_e1", "audioId": "gorilla_e1", "mode": "quiet", "threshold": 0.2, "successAudioId": "gorilla_e1_s" },
+        { "kind": "photo", "id": "gorilla_p1", "audioId": "gorilla_p1", "prompt": "Find the biggest gorilla you can see. Stand tall and still like a calm silverback, and let your grown-up take the photo.", "style": "action" },
+        { "kind": "fact", "id": "gorilla_f2", "audioId": "gorilla_f2", "learnedLine": "Gorillas build a fresh leafy nest to sleep in every night." },
+        { "kind": "badge", "id": "gorilla_b1", "audioId": "gorilla_b1" }
+      ],
+      "deep": [
+        { "kind": "photo", "id": "gorilla_d1", "audioId": "gorilla_d1", "prompt": "Look at a gorilla's hands. Photograph just your own hand held up flat, fingers together, the way a gorilla rests its hand on the grass.", "style": "detail" },
+        { "kind": "fact", "id": "gorilla_d2", "audioId": "gorilla_d2", "learnedLine": "Every gorilla has its own nose print, like my fingerprint." }
+      ]
+    },
+    {
+      "id": "gibbon",
+      "animal": "Gibbon",
+      "zone": "Gibbon Forest",
+      "keyword": "gibbon",
+      "noiseSensitive": true,
+      "badgeId": "gibbon-badge",
+      "core": [
+        { "kind": "recognition", "id": "gibbon_r1", "audioId": "gibbon_r1" },
+        { "kind": "fact", "id": "gibbon_f1", "audioId": "gibbon_f1", "learnedLine": "Gibbons have the longest arms of any ape." },
+        { "kind": "photo", "id": "gibbon_p1", "audioId": "gibbon_p1", "prompt": "Stand where your grown-up can see the gibbons behind you. Now reach both arms up as wide as you can — gibbons have the longest arms of any ape. Hold me up so I'm in it too.", "style": "action" },
+        { "kind": "yesNo", "id": "gibbon_yn1", "audioId": "gibbon_yn1", "yesAudioId": "gibbon_yn1_y", "noAudioId": "gibbon_yn1_n" },
+        { "kind": "fact", "id": "gibbon_f2", "audioId": "gibbon_f2", "learnedLine": "Gibbons sing together as a family in the morning." },
+        { "kind": "badge", "id": "gibbon_b1", "audioId": "gibbon_b1" }
+      ],
+      "deep": [
+        { "kind": "photo", "id": "gibbon_d1", "audioId": "gibbon_d1", "prompt": "Rest me on the fence rail on my own, facing the gibbons, and take a photo of just me looking out at them.", "style": "bolo" },
+        { "kind": "fact", "id": "gibbon_d2", "audioId": "gibbon_d2", "learnedLine": "Gibbons swing arm over arm, faster than a person can run." }
+      ]
+    },
+    {
+      "id": "amur",
+      "animal": "Amur Leopard",
+      "zone": "Amur",
+      "keyword": "leopard",
+      "noiseSensitive": false,
+      "badgeId": "amur-badge",
+      "core": [
+        { "kind": "recognition", "id": "amur_r1", "audioId": "amur_r1" },
+        { "kind": "fact", "id": "amur_f1", "audioId": "amur_f1", "learnedLine": "Amur leopards are the rarest big cats in the world." },
+        { "kind": "energy", "id": "amur_e1", "audioId": "amur_e1", "mode": "loud", "threshold": 0.7, "successAudioId": "amur_e1_s" },
+        { "kind": "signHunt", "id": "amur_sh1", "audioId": "amur_sh1", "word": "spots" },
+        { "kind": "photo", "id": "amur_p1", "audioId": "amur_p1", "prompt": "Crouch down low and slow like a leopard on the hunt, then look up for the photo. Keep me tucked under your arm like a cub.", "style": "action" },
+        { "kind": "badge", "id": "amur_b1", "audioId": "amur_b1" }
+      ],
+      "deep": [
+        { "kind": "fact", "id": "amur_d1", "audioId": "amur_d1", "learnedLine": "A leopard's spots are called rosettes, like little flowers." },
+        { "kind": "yesNo", "id": "amur_d2", "audioId": "amur_d2", "yesAudioId": "amur_d2_y", "noAudioId": "amur_d2_n" }
+      ]
+    },
+    {
+      "id": "snowleopard",
+      "animal": "Snow Leopard",
+      "zone": "Himalaya",
+      "keyword": "leopard",
+      "noiseSensitive": false,
+      "badgeId": "snow-badge",
+      "core": [
+        { "kind": "recognition", "id": "snow_r1", "audioId": "snow_r1" },
+        { "kind": "lookFor", "id": "snow_l1", "audioId": "snow_l1", "notVisibleAudioId": "snow_l1_nv" },
+        { "kind": "fact", "id": "snow_f1", "audioId": "snow_f1", "learnedLine": "A snow leopard's tail is nearly as long as its whole body." },
+        { "kind": "photo", "id": "snow_p1", "audioId": "snow_p1", "prompt": "Get close to the glass and photograph the leopard's spots up close — the thick grey fur and the dark rosettes.", "style": "detail" },
+        { "kind": "signHunt", "id": "snow_sh1", "audioId": "snow_sh1", "word": "tall" },
+        { "kind": "badge", "id": "snow_b1", "audioId": "snow_b1" }
+      ],
+      "deep": [
+        { "kind": "fact", "id": "snow_d1", "audioId": "snow_d1", "learnedLine": "Snow leopards wrap their long tail around themselves to keep warm." }
+      ]
+    },
+    {
+      "id": "meerkat",
+      "animal": "Meerkat",
+      "zone": "Meerkat Mound",
+      "keyword": "meerkat",
+      "noiseSensitive": false,
+      "badgeId": "meerkat-badge",
+      "core": [
+        { "kind": "recognition", "id": "meerkat_r1", "audioId": "meerkat_r1" },
+        { "kind": "fact", "id": "meerkat_f1", "audioId": "meerkat_f1", "learnedLine": "One meerkat always stands up on guard to keep the others safe." },
+        { "kind": "choice", "id": "meerkat_c1", "audioId": "meerkat_c1", "options": 3, "correct": 2, "correctAudioId": "meerkat_c1_c", "wrongAudioId": "meerkat_c1_w" },
+        { "kind": "energy", "id": "meerkat_e1", "audioId": "meerkat_e1", "mode": "claps", "threshold": 0.4, "claps": 3, "successAudioId": "meerkat_e1_s" },
+        { "kind": "photo", "id": "meerkat_p1", "audioId": "meerkat_p1", "prompt": "Stand up tall and straight like a meerkat on lookout, hands by your sides, chin up. Hold that pose for the photo.", "style": "action" },
+        { "kind": "badge", "id": "meerkat_b1", "audioId": "meerkat_b1" }
+      ],
+      "deep": [
+        { "kind": "fact", "id": "meerkat_d1", "audioId": "meerkat_d1", "learnedLine": "Meerkats take turns being the guard so everyone gets to eat." }
+      ]
+    },
+    {
+      "id": "giraffe",
+      "animal": "Giraffe",
+      "zone": "Giraffe Savannah",
+      "keyword": "giraffe",
+      "noiseSensitive": false,
+      "badgeId": "giraffe-badge",
+      "core": [
+        { "kind": "recognition", "id": "giraffe_r1", "audioId": "giraffe_r1" },
+        { "kind": "lookFor", "id": "giraffe_l1", "audioId": "giraffe_l1", "notVisibleAudioId": "giraffe_l1_nv" },
+        { "kind": "fact", "id": "giraffe_f1", "audioId": "giraffe_f1", "learnedLine": "A giraffe's tongue is longer than my whole arm." },
+        { "kind": "choice", "id": "giraffe_c1", "audioId": "giraffe_c1", "options": 2, "correct": 1, "correctAudioId": "giraffe_c1_c", "wrongAudioId": "giraffe_c1_w" },
+        { "kind": "photo", "id": "giraffe_p1", "audioId": "giraffe_p1", "prompt": "Photograph just the giraffe's coat — the brown patches with the pale lines between them. Every giraffe's pattern is different.", "style": "detail" },
+        { "kind": "badge", "id": "giraffe_b1", "audioId": "giraffe_b1" }
+      ],
+      "deep": [
+        { "kind": "fact", "id": "giraffe_d1", "audioId": "giraffe_d1", "learnedLine": "Giraffes only need to sleep for a few minutes at a time." }
+      ]
+    },
+    {
+      "id": "penguin",
+      "animal": "Humboldt Penguin",
+      "zone": "Penguin Bay",
+      "keyword": "penguin",
+      "noiseSensitive": false,
+      "badgeId": "penguin-badge",
+      "core": [
+        { "kind": "recognition", "id": "penguin_r1", "audioId": "penguin_r1" },
+        { "kind": "fact", "id": "penguin_f1", "audioId": "penguin_f1", "learnedLine": "Penguins can't fly in the air but they fly through the water." },
+        { "kind": "yesNo", "id": "penguin_yn1", "audioId": "penguin_yn1", "yesAudioId": "penguin_yn1_y", "noAudioId": "penguin_yn1_n" },
+        { "kind": "energy", "id": "penguin_e1", "audioId": "penguin_e1", "mode": "claps", "threshold": 0.4, "claps": 2, "successAudioId": "penguin_e1_s" },
+        { "kind": "signHunt", "id": "penguin_sh1", "audioId": "penguin_sh1", "word": "fish" },
+        { "kind": "photo", "id": "penguin_p1", "audioId": "penguin_p1", "prompt": "Waddle from side to side like a penguin, then stop and smile for the photo with the pool behind you.", "style": "action" },
+        { "kind": "badge", "id": "penguin_b1", "audioId": "penguin_b1" }
+      ],
+      "deep": [
+        { "kind": "fact", "id": "penguin_d1", "audioId": "penguin_d1", "learnedLine": "Each penguin knows its own chick by the sound of its call." }
+      ]
+    }
+  ],
+  "badges": [
+    { "id": "bonobo-badge", "name": "Bonobo Watcher", "animal": "Bonobo", "colour": "#0F5C3F", "motif": "B" },
+    { "id": "gorilla-badge", "name": "Gorilla Guardian", "animal": "Gorilla", "colour": "#10261E", "motif": "G" },
+    { "id": "gibbon-badge", "name": "Gibbon Caller", "animal": "Gibbon", "colour": "#5C6B63", "motif": "J" },
+    { "id": "amur-badge", "name": "Leopard Tracker", "animal": "Amur Leopard", "colour": "#B8892B", "motif": "L" },
+    { "id": "snow-badge", "name": "Mountain Spotter", "animal": "Snow Leopard", "colour": "#0F5C3F", "motif": "S" },
+    { "id": "meerkat-badge", "name": "Lookout Ranger", "animal": "Meerkat", "colour": "#B8892B", "motif": "M" },
+    { "id": "giraffe-badge", "name": "Tall Tale Teller", "animal": "Giraffe", "colour": "#10261E", "motif": "T" },
+    { "id": "penguin-badge", "name": "Splash Watcher", "animal": "Humboldt Penguin", "colour": "#0F5C3F", "motif": "P" }
+  ],
+  "audio": {
+    "bonobo_r1": "You found the bonobos. Good spotting. Let's watch them together for a moment.",
+    "bonobo_l1": "Look for a bonobo sitting close to another one. They like to stay near their friends.",
+    "bonobo_l1_nv": "If they're resting in the shade, that's alright. They keep cool under the leaves when it's warm.",
+    "bonobo_f1": "Bonobos share their food with each other, even when there isn't much. Sharing keeps everyone calm.",
+    "bonobo_e1": "Bonobos have gentle ears. Let's be as quiet as we can. Whisper a little hello to them.",
+    "bonobo_e1_s": "Lovely and quiet. They feel safe when we stay calm and soft.",
+    "bonobo_yn1": "Can you see a baby bonobo holding on tight?",
+    "bonobo_yn1_y": "You spotted a little one. Babies hold on to mum all day long.",
+    "bonobo_yn1_n": "No baby out right now. They're often tucked in close with mum.",
+    "bonobo_p1": "Time for a photo with the bonobos.",
+    "bonobo_b1": "You watched the bonobos so kindly and so quietly. Here is your bonobo pin.",
+    "bonobo_d1": "Here's something else. Bonobos can walk on two legs, just like you, when their hands are full.",
+    "bonobo_d2": "Find the sign near here that asks us to stay quiet. Say quiet when you spot it.",
+
+    "gorilla_r1": "You found the gorillas. Let's stand calmly and watch the family.",
+    "gorilla_l1": "Look for the biggest gorilla with a silver back. That one is the leader.",
+    "gorilla_l1_nv": "If the big one is out of sight, watch the little ones playing instead.",
+    "gorilla_f1": "The big gorilla with a silver back is the one in charge of the whole family.",
+    "gorilla_e1": "Gorillas like a peaceful space. Let's keep our voices soft and gentle for them.",
+    "gorilla_e1_s": "Nice and calm. A quiet visitor is a kind visitor.",
+    "gorilla_p1": "Time for a photo with the gorillas.",
+    "gorilla_f2": "Every night a gorilla builds a fresh nest out of leaves and branches to sleep in.",
+    "gorilla_b1": "You watched the gorillas so calmly. Here is your gorilla pin.",
+    "gorilla_d1": "Let's look at a gorilla's hands up close.",
+    "gorilla_d2": "Here's a secret. Every gorilla has its own nose print, just like your fingerprint.",
+
+    "gibbon_r1": "You found the gibbons. Listen out, they might be singing.",
+    "gibbon_f1": "Gibbons have the longest arms of any ape, longer than their whole body.",
+    "gibbon_p1": "Time for a photo with the gibbons.",
+    "gibbon_yn1": "Can you hear the gibbons calling to each other?",
+    "gibbon_yn1_y": "You heard them. That's how a gibbon family talks across the trees.",
+    "gibbon_yn1_n": "All quiet for now. They call most in the early morning.",
+    "gibbon_f2": "A gibbon family sings together in the morning to say this is our home.",
+    "gibbon_b1": "You listened to the gibbons so well. Here is your gibbon pin.",
+    "gibbon_d1": "Let's take a picture of just me watching the gibbons.",
+    "gibbon_d2": "Gibbons swing arm over arm through the trees, faster than a person can run.",
+
+    "amur_r1": "You found the leopard. Look slowly, they are very good at hiding.",
+    "amur_f1": "Amur leopards are the rarest big cats in the whole world. You are very lucky to see one.",
+    "amur_e1": "Out here we can be a bit bigger. Let's do our best leopard roar together, nice and loud.",
+    "amur_e1_s": "What a roar. A leopard would be proud of that.",
+    "amur_sh1": "Find the sign that talks about the leopard's spots. Say spots when you see it.",
+    "amur_p1": "Time for a leopard photo.",
+    "amur_b1": "You tracked the leopard so carefully. Here is your leopard pin.",
+    "amur_d1": "A leopard's spots are called rosettes, because each one looks like a little flower.",
+    "amur_d2": "Do leopards climb trees?",
+    "amur_d2_y": "Yes they do. Leopards are brilliant climbers and even nap up in the branches.",
+    "amur_d2_n": "They really do climb. Leopards are some of the best climbers of all the big cats.",
+
+    "snow_r1": "You found the snow leopard. They come from cold, high mountains far away.",
+    "snow_l1": "Look for that long, thick tail. It's nearly as long as the whole cat.",
+    "snow_l1_nv": "If the leopard is resting out of sight, watch for it up on the high rocks.",
+    "snow_f1": "A snow leopard's tail is nearly as long as its whole body, and very thick.",
+    "snow_p1": "Time for a close-up photo of the snow leopard.",
+    "snow_sh1": "Find the sign that tells us how tall the mountains are. Say tall when you spot it.",
+    "snow_b1": "You spotted the snow leopard so well. Here is your mountain pin.",
+    "snow_d1": "In the cold, a snow leopard wraps its long tail around itself like a scarf.",
+
+    "meerkat_r1": "You found the meerkats. Watch closely, they are always busy.",
+    "meerkat_f1": "One meerkat always stands up on guard to keep the whole family safe.",
+    "meerkat_c1": "A meerkat on guard is doing an important job. Is it one, digging a hole? Two, watching for danger? Or three, going to sleep? Say one, two or three.",
+    "meerkat_c1_c": "That's it, number two. The guard watches for danger while the others dig.",
+    "meerkat_c1_w": "The guard is actually watching for danger, keeping everyone safe.",
+    "meerkat_e1": "Meerkats scratch and tap in the sand. Give me three claps like a busy meerkat.",
+    "meerkat_e1_s": "Three claps, brilliant. Just like a meerkat digging away.",
+    "meerkat_p1": "Time for a meerkat photo.",
+    "meerkat_b1": "You watched the lookout so well. Here is your lookout pin.",
+    "meerkat_d1": "The meerkats take turns being the guard, so everyone gets a chance to eat.",
+
+    "giraffe_r1": "You found the giraffes. Look all the way up to see their heads.",
+    "giraffe_l1": "Look for how a giraffe spreads its front legs wide to reach down for a drink.",
+    "giraffe_l1_nv": "If none are drinking, watch how they use that long neck to reach the high leaves.",
+    "giraffe_f1": "A giraffe's tongue is longer than your whole arm, and it's blue-grey to keep it from burning in the sun.",
+    "giraffe_c1": "How does a giraffe reach the tastiest leaves? Is it one, stretching its long neck up high? Or two, digging down low? Say one or two.",
+    "giraffe_c1_c": "Yes, number one. That long neck reaches the leaves no one else can.",
+    "giraffe_c1_w": "It reaches up high with that long neck to the leaves no one else can get.",
+    "giraffe_p1": "Time for a photo of the giraffe's coat.",
+    "giraffe_b1": "You looked all the way up. Here is your giraffe pin.",
+    "giraffe_d1": "Giraffes only sleep a few minutes at a time, often standing right up.",
+
+    "penguin_r1": "You found the penguins. Watch them waddle and then dive.",
+    "penguin_f1": "Penguins can't fly in the air, but they fly through the water using their flippers.",
+    "penguin_yn1": "Can you see a penguin swimming underwater?",
+    "penguin_yn1_y": "You spotted a swimmer. Underwater is where a penguin is fastest.",
+    "penguin_yn1_n": "None in the water yet. Keep watching, one might dive in soon.",
+    "penguin_e1": "Penguins slap the water with their flippers. Give me two claps like a splashing penguin.",
+    "penguin_e1_s": "Two claps, wonderful. Splash splash, just like a penguin.",
+    "penguin_sh1": "Find the sign that tells us what penguins eat. Say fish when you spot it.",
+    "penguin_p1": "Time for a penguin photo.",
+    "penguin_b1": "You watched the penguins splash about so well. Here is your penguin pin.",
+    "penguin_d1": "In a big noisy group, each penguin still knows its own chick just by its call."
+  }
+}

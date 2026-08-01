@@ -18,7 +18,7 @@ export function SettingsScreen() {
   const doDelete = async () => {
     await deleteEverything();
     setConfirming(false);
-    navigate("start");
+    navigate("dashboard");
   };
 
   return (
@@ -98,6 +98,10 @@ export function SettingsScreen() {
             There is no account, no cloud and no sharing built in. Bolo doesn't use
             your location — the card in the rucksack is the only signal.
           </p>
+          <p>
+            Packs you've unlocked are stored here too. If you delete them, scan the QR
+            inside your cards again to get them back.
+          </p>
         </section>
 
         {!confirming ? (
@@ -107,8 +111,8 @@ export function SettingsScreen() {
         ) : (
           <div className={styles.confirm} role="alertdialog" aria-label="Confirm delete">
             <p className={styles.confirmText}>
-              This deletes every photo, badge and visit on this phone. It can't be
-              undone.
+              This deletes every photo, badge, today and unlocked pack on this phone.
+              It can't be undone, though you can scan your cards again.
             </p>
             <div className={styles.confirmRow}>
               <Button variant="ghost" onClick={() => setConfirming(false)}>

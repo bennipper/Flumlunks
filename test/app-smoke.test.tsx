@@ -14,7 +14,7 @@ import { App } from "../src/App";
  * type checker and unit tests can't (context, hooks, engine construction).
  */
 describe("app boot", () => {
-  it("mounts the full tree and renders the Start screen", async () => {
+  it("mounts the full tree and renders the Dashboard", async () => {
     window.location.hash = "";
     render(
       <RouterProvider>
@@ -23,12 +23,13 @@ describe("app boot", () => {
         </AppProvider>
       </RouterProvider>
     );
+    // With nothing owned yet, the dashboard nudges the parent to unlock a pack.
     await waitFor(() =>
-      expect(screen.getByText("A day with Bolo")).toBeInTheDocument()
+      expect(screen.getByText("Unlock your first pack")).toBeInTheDocument()
     );
-    expect(screen.getByText("Twycross Zoo")).toBeInTheDocument();
+    expect(screen.getByText("FLUMLUNK")).toBeInTheDocument();
     expect(
-      screen.getByRole("button", { name: "Start the day" })
+      screen.getByRole("button", { name: "Scan a card" })
     ).toBeInTheDocument();
   });
 });

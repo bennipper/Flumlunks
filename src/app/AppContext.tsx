@@ -9,134 +9,141 @@ import {
 } from "react";
 import { getBolo, getSimBolo } from "../bolo";
 import type { BoloDevice } from "../bolo/BoloDevice";
-import { loadPack } from "../content/loader";
 import type { Pack } from "../content/schema";
-import packJson from "../content/packs/twycross/pack.json";
+import { CATALOGUE, type CatalogueEntry } from "../content/catalogue";
+import { loadOwnedPacks } from "../content/registry";
 import { BeatEngine, SYSTEM_LINES, type EngineState } from "../visit/beats";
 import { useStore } from "../store";
 import { putPhoto } from "../storage/blobs";
 import { useNav } from "./router";
+import { useHydrated } from "./useHydrated";
 
 /**
- * Boots the prototype: validates the pack, wires the Bolo device and the beat
- * engine to the store, and hands both down to the screens. If the pack is
- * malformed it is refused here and the app renders the error rather than running
- * bad content (BUILD.md §6).
+ * Boots the prototype and holds the always-on machinery: the catalogue, the packs
+ * the family owns, the Bolo device, and a beat engine that recognises any card from
+ * any owned pack. There is no session — the engine listens the whole time and the
+ * ambient Today collects what the child plays.
  */
 
 type AppValue = {
-  pack: Pack | null;
-  packError: string[] | null;
+  catalogue: CatalogueEntry[];
+  ownedPacks: Pack[];
   device: BoloDevice;
-  engine: BeatEngine;
   engineState: EngineState;
+  getPack(id: string): Pack | null;
+  packForCard(cardId: string): Pack | null;
+  primaryPack(): Pack | null;
   capturePhoto(blob: Blob): Promise<void>;
+};
+
+const IDLE: EngineState = {
+  status: "idle",
+  plainLabel: "No card in Bolo's rucksack. Pop one in to begin.",
+  micRemainingMs: 0,
+  taps: [],
 };
 
 const AppContext = createContext<AppValue | null>(null);
 
 export function AppProvider({ children }: { children: ReactNode }) {
+  const hydrated = useHydrated();
   const nav = useNav();
   const navRef = useRef(nav.navigate);
   navRef.current = nav.navigate;
 
-  const [pack, packError] = useMemo<[Pack | null, string[] | null]>(() => {
-    try {
-      return [loadPack(packJson), null];
-    } catch (e) {
-      const problems =
-        e && typeof e === "object" && "problems" in e
-          ? ((e as { problems: string[] }).problems ?? [])
-          : [String(e)];
-      return [null, problems];
-    }
-  }, []);
-
   const device = useMemo(() => getBolo(), []);
+  const [engineState, setEngineState] = useState<EngineState>(IDLE);
   const engineRef = useRef<BeatEngine | null>(null);
-  const [engineState, setEngineState] = useState<EngineState>(() => ({
-    status: "idle",
-    plainLabel: "Waiting for a card. Pop one into Bolo's rucksack.",
-    micRemainingMs: 0,
-    taps: [],
-  }));
 
-  // Build the engine once the pack is validated.
-  if (pack && !engineRef.current) {
-    getSimBolo()?.setManifest({ ...pack.audio, ...SYSTEM_LINES }, pack.vocabulary);
-    engineRef.current = new BeatEngine(device, pack, {
+  const ownedPackIds = useStore((s) => s.ownedPackIds);
+  const gapMs = useStore((s) => s.settings.gapMs);
+  const muted = useStore((s) => s.settings.muted);
+  const volumeCeiling = useStore((s) => s.settings.volumeCeiling);
+  const ensureToday = useStore((s) => s.ensureToday);
+
+  // Owned packs that actually have playable content.
+  const ownedPacks = useMemo(() => loadOwnedPacks(ownedPackIds), [ownedPackIds]);
+  const ownedKey = ownedPacks.map((p) => p.id).join(",");
+
+  // Roll over / create Today once persistence has settled.
+  useEffect(() => {
+    if (hydrated) ensureToday();
+  }, [hydrated, ensureToday]);
+
+  // (Re)build the engine whenever the owned playable set changes.
+  useEffect(() => {
+    getSimBolo()?.setManifest(
+      { ...mergeAudio(ownedPacks), ...SYSTEM_LINES },
+      mergeVocab(ownedPacks)
+    );
+    const engine = new BeatEngine(device, ownedPacks, {
       onBeatHeard: (cardId, beatId) =>
         useStore.getState().recordBeatHeard(cardId, beatId),
       onLearned: (line) => useStore.getState().recordLearned(line),
       onBadge: (badgeId) => useStore.getState().recordBadge(badgeId),
       requestCamera: () => navRef.current("camera"),
     });
-  }
-  const engine = engineRef.current;
-
-  useEffect(() => {
-    if (!engine) return;
+    engineRef.current = engine;
     const unsub = engine.subscribe(setEngineState);
     return () => {
       unsub();
+      engine.dispose();
+      engineRef.current = null;
     };
-  }, [engine]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [ownedKey, device]);
 
-  // Keep device + engine in step with settings.
-  const settings = useStore((s) => s.settings);
   useEffect(() => {
     const sim = getSimBolo();
-    sim?.setMuted(settings.muted);
-    sim?.setVolumeCeiling(settings.volumeCeiling);
-    engine?.setGapMs(settings.gapMs);
-  }, [settings.muted, settings.volumeCeiling, settings.gapMs, engine]);
+    sim?.setMuted(muted);
+    sim?.setVolumeCeiling(volumeCeiling);
+    engineRef.current?.setGapMs(gapMs);
+  }, [muted, volumeCeiling, gapMs]);
 
-  useEffect(
-    () => () => {
-      engineRef.current?.dispose();
-    },
-    []
-  );
-
-  const value = useMemo<AppValue | null>(() => {
-    if (!engine) return null;
+  const value = useMemo<AppValue>(() => {
+    const getPack = (id: string) => ownedPacks.find((p) => p.id === id) ?? null;
+    const packForCard = (cardId: string) =>
+      ownedPacks.find((p) => p.cards.some((c) => c.id === cardId)) ?? null;
     return {
-      pack,
-      packError,
+      catalogue: CATALOGUE,
+      ownedPacks,
       device,
-      engine,
       engineState,
+      getPack,
+      packForCard,
+      primaryPack: () => {
+        const played = useStore.getState().today?.cardsPlayed ?? [];
+        for (let i = played.length - 1; i >= 0; i--) {
+          const pack = packForCard(played[i].cardId);
+          if (pack) return pack;
+        }
+        return ownedPacks[0] ?? null;
+      },
       capturePhoto: async (blob: Blob) => {
-        const req = engine.getState().photoRequest;
+        const req = engineRef.current?.getState().photoRequest;
         const key = await putPhoto(blob);
         useStore.getState().recordPhoto({
           blobKey: key,
-          cardId: req?.cardId ?? engine.getState().cardId ?? "",
+          cardId: req?.cardId ?? engineRef.current?.getState().cardId ?? "",
           prompt: req?.prompt ?? "",
           at: new Date().toISOString(),
         });
-        engine.submitPhoto(key);
+        engineRef.current?.submitPhoto(key);
       },
     };
-  }, [engine, pack, packError, device, engineState]);
+  }, [ownedPacks, device, engineState]);
 
-  if (packError) {
-    return (
-      <div className="app-frame" style={{ padding: 24 }}>
-        <h1 style={{ color: "var(--signal)" }}>Pack refused</h1>
-        <p>This content pack did not pass validation, so it will not run.</p>
-        <ul>
-          {packError.map((p, i) => (
-            <li key={i}>{p}</li>
-          ))}
-        </ul>
-      </div>
-    );
-  }
-
-  if (!value) return <div className="app-frame" />;
+  if (!hydrated) return <div className="app-frame" />;
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
+}
+
+function mergeAudio(packs: Pack[]): Record<string, string> {
+  return Object.assign({}, ...packs.map((p) => p.audio));
+}
+
+function mergeVocab(packs: Pack[]): string[] {
+  return [...new Set(packs.flatMap((p) => p.vocabulary))];
 }
 
 export function useApp(): AppValue {

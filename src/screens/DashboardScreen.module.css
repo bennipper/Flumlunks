@@ -2,31 +2,60 @@
   flex: 1;
   overflow-y: auto;
   overflow-x: hidden;
-  padding: var(--space-4) var(--space-5) var(--space-6);
+  padding: 0 var(--space-5) var(--space-7);
   display: flex;
   flex-direction: column;
   gap: var(--space-5);
+}
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  background: var(--chalk);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: max(env(safe-area-inset-top), 16px) 0 var(--space-3);
+}
+.brand {
+  font-family: var(--font-display);
+  letter-spacing: 0.16em;
+  color: var(--enamel);
+  font-size: 22px;
+  font-weight: 700;
+}
+.headerRight {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
 }
 .status {
   display: inline-flex;
   align-items: center;
   gap: var(--space-2);
-  color: var(--on-enamel);
-  font-size: 15px;
+  color: var(--slate);
+  font-size: 14px;
   font-weight: 600;
 }
 .dotOn,
 .dotOff {
-  width: 12px;
-  height: 12px;
+  width: 10px;
+  height: 10px;
   border-radius: 50%;
-  display: inline-block;
 }
 .dotOn {
-  background: #7fd1a8;
+  background: var(--enamel);
 }
 .dotOff {
   background: var(--signal);
+}
+.gear {
+  background: transparent;
+  border: none;
+  font-size: 26px;
+  width: var(--tap-min);
+  height: var(--tap-min);
+  color: var(--ink);
 }
 
 .now {
@@ -50,7 +79,6 @@
 .beat {
   margin-top: var(--space-3);
   font-size: var(--fs-arm);
-  color: var(--ink);
 }
 .mic {
   margin-top: var(--space-4);
@@ -93,6 +121,27 @@
   gap: var(--space-3);
 }
 
+.nudge {
+  background: var(--enamel);
+  color: var(--on-enamel);
+  padding: var(--space-5);
+}
+.nudgeTitle {
+  font-family: var(--font-display);
+  text-transform: uppercase;
+  font-size: var(--fs-lead);
+  margin: 0 0 var(--space-2);
+}
+.nudgeText {
+  margin: 0 0 var(--space-4);
+  font-size: 16px;
+}
+.nudgeRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
 .block {
   display: flex;
   flex-direction: column;
@@ -109,31 +158,48 @@
 .badges {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--space-4);
-}
-.badgeItem {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: var(--space-1);
-  width: 84px;
-}
-.badgeName {
-  font-size: 13px;
-  text-align: center;
-  color: var(--slate);
-  line-height: 1.1;
+  gap: var(--space-3);
 }
 .empty {
   color: var(--slate);
   font-size: 15px;
   margin: 0;
 }
+
+.menu {
+  display: flex;
+  flex-direction: column;
+  border-top: 2px solid var(--hairline);
+}
+.menuRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid var(--hairline);
+  padding: var(--space-4) 0;
+  min-height: var(--tap-min);
+  text-align: left;
+}
+.menuLabel {
+  font-family: var(--font-display);
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  font-size: var(--fs-arm);
+  color: var(--ink);
+}
+.menuHint {
+  color: var(--slate);
+  font-size: 15px;
+}
+.volume {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
 .slider {
   width: 100%;
   accent-color: var(--signal);
   height: var(--tap-min);
-}
-.endWrap {
-  margin-top: var(--space-3);
 }

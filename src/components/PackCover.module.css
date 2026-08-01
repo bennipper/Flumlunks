@@ -1,0 +1,55 @@
+.cover {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: var(--space-3);
+  text-align: left;
+  color: var(--on-enamel);
+  border: none;
+  padding: var(--space-4);
+  min-height: 150px;
+  width: 100%;
+  overflow: hidden;
+}
+.wide {
+  min-height: 120px;
+  flex-direction: row;
+  align-items: center;
+}
+.motif {
+  font-size: 44px;
+  line-height: 1;
+}
+.wide .motif {
+  font-size: 52px;
+}
+.text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+  min-width: 0;
+}
+.title {
+  font-family: var(--font-display);
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  font-size: var(--fs-lead);
+  line-height: 1.05;
+}
+.subtitle {
+  font-size: 14px;
+  opacity: 0.85;
+}
+.tag {
+  position: absolute;
+  top: var(--space-3);
+  right: var(--space-3);
+  font-family: var(--font-display);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-size: 12px;
+  padding: 4px 8px;
+  background: rgba(247, 245, 238, 0.16);
+}

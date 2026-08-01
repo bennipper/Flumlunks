@@ -1,18 +1,16 @@
 import { create } from "zustand";
 import { persist, createJSONStorage, type StateStorage } from "zustand/middleware";
 import { get, set, del, createStore } from "idb-keyval";
-import {
-  newVisit,
-  type Visit,
-  type VisitPhase,
-  type VisitPhoto,
-} from "./visit/machine";
+import { dayKey, newVisit, type Visit, type VisitPhoto } from "./visit/machine";
 import { clearAllPhotos } from "./storage/blobs";
 
 /**
  * The single source of truth. All state is local (hard rule §1): persisted to
- * IndexedDB via idb-keyval, never uploaded. A visit is resumable across a page
- * reload (BUILD.md §8).
+ * IndexedDB via idb-keyval, never uploaded.
+ *
+ * Two kinds of state: entitlements (which packs you own / have downloaded, unlocked
+ * by scanning the QR inside physical cards) and the ambient Today the child fills by
+ * playing cards. There is no session to start or end.
  */
 
 export type Settings = {
@@ -25,15 +23,20 @@ export type Settings = {
 };
 
 type StoreState = {
-  phase: VisitPhase;
-  visit: Visit | null;
+  ownedPackIds: string[];
+  downloadedPackIds: string[];
+  today: Visit | null;
   settings: Settings;
+  /** Ephemeral UI selection (which pack a sub-screen is showing). Not persisted. */
+  selectedPackId: string | null;
 
-  startVisit(args: { packId: string; packVersion: string }): void;
-  endVisit(): void;
-  complete(): void;
-  resetToIdle(): void;
+  // entitlements
+  unlockPack(packId: string): void;
+  selectPack(packId: string | null): void;
 
+  // today
+  ensureToday(): void;
+  startNewDay(): void;
   recordBeatHeard(cardId: string, beatId: string): void;
   recordPhoto(photo: VisitPhoto): void;
   recordBadge(badgeId: string): void;
@@ -61,71 +64,74 @@ const DEFAULT_SETTINGS: Settings = {
 export const useStore = create<StoreState>()(
   persist(
     (setState, getState) => ({
-      phase: "idle",
-      visit: null,
+      ownedPackIds: [],
+      downloadedPackIds: [],
+      today: null,
       settings: DEFAULT_SETTINGS,
+      selectedPackId: null,
 
-      startVisit: ({ packId, packVersion }) => {
-        const { settings } = getState();
+      unlockPack: (packId) => {
+        const s = getState();
+        const owned = s.ownedPackIds.includes(packId)
+          ? s.ownedPackIds
+          : [...s.ownedPackIds, packId];
+        // Unlocking a pack also caches its content for offline use (simulated here).
+        const downloaded = s.downloadedPackIds.includes(packId)
+          ? s.downloadedPackIds
+          : [...s.downloadedPackIds, packId];
+        setState({ ownedPackIds: owned, downloadedPackIds: downloaded });
+      },
+
+      selectPack: (packId) => setState({ selectedPackId: packId }),
+
+      ensureToday: () => {
+        const { today } = getState();
+        const key = dayKey();
+        if (today && today.day === key) return;
+        // Missing or from a previous day → roll over to a fresh Today.
         setState({
-          phase: "active",
-          visit: newVisit({
-            packId,
-            packVersion,
-            childFirstName: settings.childFirstName,
-          }),
+          today: newVisit({ childFirstName: getState().settings.childFirstName }),
         });
       },
 
-      endVisit: () => {
-        const { visit } = getState();
-        if (!visit) return;
+      startNewDay: () => {
         setState({
-          phase: "composing",
-          visit: { ...visit, endedAt: new Date().toISOString() },
+          today: newVisit({ childFirstName: getState().settings.childFirstName }),
         });
       },
-
-      complete: () => setState({ phase: "complete" }),
-
-      resetToIdle: () => setState({ phase: "idle", visit: null }),
 
       recordBeatHeard: (cardId, beatId) => {
-        const { visit } = getState();
-        if (!visit) return;
-        const cardsPlayed = [...visit.cardsPlayed];
+        const { today } = getState();
+        if (!today) return;
+        const cardsPlayed = [...today.cardsPlayed];
         const idx = cardsPlayed.findIndex((c) => c.cardId === cardId);
         if (idx === -1) {
-          cardsPlayed.push({
-            cardId,
-            beatsHeard: [beatId],
-            at: new Date().toISOString(),
-          });
+          cardsPlayed.push({ cardId, beatsHeard: [beatId], at: new Date().toISOString() });
         } else if (!cardsPlayed[idx].beatsHeard.includes(beatId)) {
           cardsPlayed[idx] = {
             ...cardsPlayed[idx],
             beatsHeard: [...cardsPlayed[idx].beatsHeard, beatId],
           };
         }
-        setState({ visit: { ...visit, cardsPlayed } });
+        setState({ today: { ...today, cardsPlayed } });
       },
 
       recordPhoto: (photo) => {
-        const { visit } = getState();
-        if (!visit) return;
-        setState({ visit: { ...visit, photos: [...visit.photos, photo] } });
+        const { today } = getState();
+        if (!today) return;
+        setState({ today: { ...today, photos: [...today.photos, photo] } });
       },
 
       recordBadge: (badgeId) => {
-        const { visit } = getState();
-        if (!visit || visit.badges.includes(badgeId)) return;
-        setState({ visit: { ...visit, badges: [...visit.badges, badgeId] } });
+        const { today } = getState();
+        if (!today || today.badges.includes(badgeId)) return;
+        setState({ today: { ...today, badges: [...today.badges, badgeId] } });
       },
 
       recordLearned: (line) => {
-        const { visit } = getState();
-        if (!visit || visit.learned.includes(line)) return;
-        setState({ visit: { ...visit, learned: [...visit.learned, line] } });
+        const { today } = getState();
+        if (!today || today.learned.includes(line)) return;
+        setState({ today: { ...today, learned: [...today.learned, line] } });
       },
 
       updateSettings: (patch) =>
@@ -133,15 +139,22 @@ export const useStore = create<StoreState>()(
 
       deleteEverything: async () => {
         await clearAllPhotos();
-        setState({ phase: "idle", visit: null, settings: DEFAULT_SETTINGS });
+        setState({
+          ownedPackIds: [],
+          downloadedPackIds: [],
+          today: null,
+          selectedPackId: null,
+          settings: DEFAULT_SETTINGS,
+        });
       },
     }),
     {
       name: "flumlunk-visit",
       storage: createJSONStorage(() => idbStorage),
       partialize: (s) => ({
-        phase: s.phase,
-        visit: s.visit,
+        ownedPackIds: s.ownedPackIds,
+        downloadedPackIds: s.downloadedPackIds,
+        today: s.today,
         settings: s.settings,
       }),
     }

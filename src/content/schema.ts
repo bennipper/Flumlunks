@@ -92,9 +92,11 @@ export const badgeSchema = z.object({
 });
 
 export const packSchema = z.object({
-  id: z.literal("twycross"),
+  // Generalised from a single hardcoded venue so the device can hold a library of
+  // packs (venues and topics), each unlocked by the QR inside its physical cards.
+  id: z.string().min(1),
   version: z.string().min(1),
-  venueName: z.literal("Twycross Zoo"),
+  venueName: z.string().min(1),
   approvedBy: z.string().min(1),
   approvedAt: z.string().min(1),
   vocabulary: z.array(z.string().min(1)),

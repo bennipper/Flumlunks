@@ -32,36 +32,34 @@ export function Button({
   );
 }
 
-export function TopBar({ title, right }: { title: string; right?: ReactNode }) {
+export function TopBar({
+  title,
+  right,
+  back = "dashboard",
+  showBack = true,
+}: {
+  title: string;
+  right?: ReactNode;
+  back?: Route;
+  showBack?: boolean;
+}) {
+  const { navigate } = useNav();
   return (
     <header className={`${styles.topbar} ${styles.topbarPad}`}>
-      <span className={styles.topbarTitle}>{title}</span>
+      <div className={styles.topbarLeft}>
+        {showBack && (
+          <button
+            className={styles.back}
+            onClick={() => navigate(back)}
+            aria-label="Back"
+          >
+            ‹
+          </button>
+        )}
+        <span className={styles.topbarTitle}>{title}</span>
+      </div>
       {right}
     </header>
-  );
-}
-
-const TABS: { route: Route; label: string }[] = [
-  { route: "live", label: "Today" },
-  { route: "cards", label: "Cards" },
-  { route: "settings", label: "Settings" },
-];
-
-export function TabBar() {
-  const { route, navigate } = useNav();
-  return (
-    <nav className={styles.tabbar} aria-label="Main">
-      {TABS.map((t) => (
-        <button
-          key={t.route}
-          className={`${styles.tab} ${route === t.route ? styles.tabActive : ""}`}
-          aria-current={route === t.route ? "page" : undefined}
-          onClick={() => navigate(t.route)}
-        >
-          {t.label}
-        </button>
-      ))}
-    </nav>
   );
 }
 

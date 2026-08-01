@@ -12,7 +12,7 @@ import styles from "./DebugPanel.module.css";
  * gap slider. This is the only place that reaches for the concrete SimBolo.
  */
 export function DebugPanel() {
-  const { pack, engineState } = useApp();
+  const { ownedPacks, engineState } = useApp();
   const sim = getSimBolo();
   const [open, setOpen] = useState(false);
   const [simState, setSimState] = useState<SimState | null>(null);
@@ -24,7 +24,9 @@ export function DebugPanel() {
 
   useEffect(() => sim?.onState(setSimState), [sim]);
 
-  if (!sim || !pack) return null;
+  if (!sim) return null;
+
+  const cards = ownedPacks.flatMap((p) => p.cards);
 
   const insert = (cardId: string) => {
     sim.primeAudio();
@@ -59,17 +61,23 @@ export function DebugPanel() {
 
           <div className={styles.group}>
             <div className={styles.groupLabel}>Cards — tap to insert / remove</div>
-            <div className={styles.grid}>
-              {pack.cards.map((c) => (
-                <button
-                  key={c.id}
-                  className={`${styles.chip} ${inCard === c.id ? styles.chipOn : ""}`}
-                  onClick={() => insert(c.id)}
-                >
-                  {c.animal}
-                </button>
-              ))}
-            </div>
+            {cards.length === 0 ? (
+              <div className={styles.empty}>
+                Unlock a pack (Scan → Dev quick unlock) to insert its cards.
+              </div>
+            ) : (
+              <div className={styles.grid}>
+                {cards.map((c) => (
+                  <button
+                    key={c.id}
+                    className={`${styles.chip} ${inCard === c.id ? styles.chipOn : ""}`}
+                    onClick={() => insert(c.id)}
+                  >
+                    {c.animal}
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
 
           <SqueezeButton onSqueeze={(k) => send(() => sim.injectSqueeze(k))} />

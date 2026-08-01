@@ -9,7 +9,7 @@ import { packWith, recordingHooks } from "./helpers/packs";
 function make(pack: Pack) {
   const bolo = new FakeBolo();
   const hooks = recordingHooks();
-  const engine = new BeatEngine(bolo, pack, hooks);
+  const engine = new BeatEngine(bolo, [pack], hooks);
   engine.setGapMs(5);
   return { bolo, engine, hooks };
 }

@@ -100,12 +100,17 @@ export class BeatEngine {
   private micCountdown: ReturnType<typeof setInterval> | null = null;
 
   private unsubs: (() => void)[] = [];
+  /** Every card the device can recognise, across all owned+downloaded packs. */
+  private cards = new Map<string, Card>();
 
   constructor(
     private device: BoloDevice,
-    private pack: Pack,
+    packs: Pack[],
     private hooks: EngineHooks
   ) {
+    for (const pack of packs) {
+      for (const card of pack.cards) this.cards.set(card.id, card);
+    }
     this.unsubs.push(this.device.onCardIn((id) => this.onCardIn(id)));
     this.unsubs.push(this.device.onCardOut(() => this.onCardOut()));
     this.unsubs.push(this.device.onSqueeze((k) => this.onSqueeze(k)));
@@ -147,7 +152,7 @@ export class BeatEngine {
   // --- card lifecycle -----------------------------------------------------
 
   private onCardIn(cardId: string): void {
-    const card = this.pack.cards.find((c) => c.id === cardId);
+    const card = this.cards.get(cardId);
     if (!card) return;
     // Card swapped mid-beat → immediate switch, no confirmation (§7).
     void this.runCard(card);
@@ -169,7 +174,7 @@ export class BeatEngine {
 
   private onSqueeze(kind: "single" | "double"): void {
     if (!this.currentCardId) return;
-    const card = this.pack.cards.find((c) => c.id === this.currentCardId);
+    const card = this.cards.get(this.currentCardId);
     if (!card) return;
     if (kind === "single") {
       // Pull a deep beat now (deep beats are pull-only, §6).

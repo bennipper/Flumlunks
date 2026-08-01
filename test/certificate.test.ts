@@ -13,10 +13,8 @@ const pack = loadPack(packJson);
 function visitWith(overrides: Partial<Visit>): Visit {
   return {
     id: "v1",
-    packId: "twycross",
-    packVersion: pack.version,
+    day: "2026-08-01",
     startedAt: "2026-08-01T09:00:00.000Z",
-    endedAt: "2026-08-01T15:00:00.000Z",
     cardsPlayed: [],
     photos: [],
     badges: [],

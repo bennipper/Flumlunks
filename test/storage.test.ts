@@ -32,18 +32,21 @@ describe("photo blob storage", () => {
   });
 });
 
-describe("deleteEverything (BUILD.md §8, §13 phase 8)", () => {
+describe("deleteEverything (BUILD.md §13 phase 8)", () => {
   beforeEach(() => {
     useStore.setState({
-      phase: "idle",
-      visit: null,
+      ownedPackIds: [],
+      downloadedPackIds: [],
+      today: null,
+      selectedPackId: null,
       settings: { childFirstName: "", volumeCeiling: 0.85, muted: false, gapMs: 4000 },
     });
   });
 
-  it("clears all visits, photos, badges and blobs", async () => {
+  it("clears packs, today, photos, badges and blobs", async () => {
     const store = useStore.getState();
-    store.startVisit({ packId: "twycross", packVersion: "1" });
+    store.unlockPack("twycross");
+    store.ensureToday();
     store.updateSettings({ childFirstName: "Mo", volumeCeiling: 0.3 });
 
     const key = await putPhoto(blob("photo"));
@@ -53,13 +56,16 @@ describe("deleteEverything (BUILD.md §8, §13 phase 8)", () => {
     useStore.getState().recordBadge("bonobo-badge");
     useStore.getState().recordLearned("Bonobos share their food.");
 
-    expect(useStore.getState().visit?.photos).toHaveLength(1);
+    expect(useStore.getState().today?.photos).toHaveLength(1);
+    expect(useStore.getState().ownedPackIds).toContain("twycross");
+    expect(useStore.getState().downloadedPackIds).toContain("twycross");
 
     await useStore.getState().deleteEverything();
 
     const after = useStore.getState();
-    expect(after.phase).toBe("idle");
-    expect(after.visit).toBeNull();
+    expect(after.ownedPackIds).toEqual([]);
+    expect(after.downloadedPackIds).toEqual([]);
+    expect(after.today).toBeNull();
     expect(after.settings.childFirstName).toBe("");
     expect(after.settings.volumeCeiling).toBe(0.85);
     expect(await getPhoto(key)).toBeUndefined();

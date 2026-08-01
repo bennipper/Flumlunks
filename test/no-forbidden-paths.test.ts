@@ -1,5 +1,5 @@
 import { execSync } from "node:child_process";
-import { existsSync, readdirSync, readFileSync } from "node:fs";
+import { readdirSync, readFileSync, rmSync } from "node:fs";
 import { resolve } from "node:path";
 import { describe, expect, it, beforeAll } from "vitest";
 
@@ -13,29 +13,44 @@ import { describe, expect, it, beforeAll } from "vitest";
 const root = resolve(__dirname, "..");
 const distAssets = resolve(root, "dist/assets");
 
-// Hosts that appear only as strings (error links, XML namespaces) — never fetched.
-const ALLOWED_HOSTS = ["www.w3.org", "reactjs.org", "react.dev", "github.com", "fb.me"];
+// Hosts that appear only as strings — never fetched. The shop host is an outbound
+// "buy" link (a user-initiated navigation via window.open, no data sent); the rest
+// are React error links and the SVG XML namespace.
+const ALLOWED_HOSTS = [
+  "www.w3.org",
+  "reactjs.org",
+  "react.dev",
+  "github.com",
+  "fb.me",
+  "shop.flumlunk.example",
+];
 
+// Analytics/ad hosts, matched as domains so common words (e.g. the SVG attribute
+// "amplitude" in React's attribute table) don't trip a false positive.
 const ANALYTICS = [
-  "google-analytics",
-  "googletagmanager",
+  "google-analytics.com",
+  "googletagmanager.com",
   "segment.io",
   "segment.com",
-  "mixpanel",
-  "amplitude",
+  "mixpanel.com",
+  "amplitude.com",
   "sentry.io",
-  "doubleclick",
+  "doubleclick.net",
   "facebook.net",
-  "hotjar",
-  "fullstory",
+  "hotjar.com",
+  "fullstory.com",
 ];
 
 let bundle = "";
 
 beforeAll(() => {
-  if (!existsSync(distAssets)) {
-    execSync("npm run build", { cwd: root, stdio: "ignore" });
-  }
+  // Always grade a fresh production build — that's what ships (BUILD.md §14).
+  rmSync(resolve(root, "dist"), { recursive: true, force: true });
+  execSync("npm run build", {
+    cwd: root,
+    stdio: "ignore",
+    env: { ...process.env, NODE_ENV: "production" },
+  });
   bundle = readdirSync(distAssets)
     .filter((f) => f.endsWith(".js"))
     .map((f) => readFileSync(resolve(distAssets, f), "utf8"))

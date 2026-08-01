@@ -65,7 +65,7 @@ export function CameraScreen() {
       canvas.toBlob(r, "image/jpeg", 0.92)
     );
     if (blob) await capturePhoto(blob);
-    navigate("live");
+    navigate("dashboard");
   };
 
   return (
@@ -87,7 +87,7 @@ export function CameraScreen() {
       )}
 
       <div className={styles.controls}>
-        <Button variant="ghost" onClick={() => navigate("live")}>
+        <Button variant="ghost" onClick={() => navigate("dashboard")}>
           Back
         </Button>
         <button

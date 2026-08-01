@@ -14,18 +14,29 @@ import {
  */
 
 export type Route =
-  | "start"
-  | "live"
-  | "camera"
+  | "dashboard"
+  | "store"
+  | "scan"
+  | "library"
   | "cards"
+  | "camera"
   | "certificate"
   | "settings";
 
-const ROUTES: Route[] = ["start", "live", "camera", "cards", "certificate", "settings"];
+const ROUTES: Route[] = [
+  "dashboard",
+  "store",
+  "scan",
+  "library",
+  "cards",
+  "camera",
+  "certificate",
+  "settings",
+];
 
 function readHash(): Route {
   const raw = window.location.hash.replace(/^#\/?/, "");
-  return (ROUTES as string[]).includes(raw) ? (raw as Route) : "start";
+  return (ROUTES as string[]).includes(raw) ? (raw as Route) : "dashboard";
 }
 
 type Nav = { route: Route; navigate: (r: Route) => void };

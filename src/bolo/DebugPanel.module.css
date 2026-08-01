@@ -87,6 +87,10 @@
   color: var(--on-signal);
   border-color: var(--signal);
 }
+.empty {
+  font-size: 14px;
+  color: #9fb3a8;
+}
 .send {
   background: var(--enamel);
   border-color: var(--enamel);

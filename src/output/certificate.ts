@@ -40,7 +40,7 @@ export function certificateModel(visit: Visit, pack: Pack): CertificateModel {
   return {
     name,
     title: pickTitle(visit.badges, pack),
-    dateText: longDate(visit.endedAt ?? visit.startedAt),
+    dateText: longDate(visit.startedAt),
     venue: pack.venueName,
     // Three things I learned, drawn from learned[], so no two match (§10).
     learned: visit.learned.slice(0, 3),

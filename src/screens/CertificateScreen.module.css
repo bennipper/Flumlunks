@@ -6,12 +6,19 @@
   padding: var(--space-5);
   gap: var(--space-4);
 }
-.header {
-  font-family: var(--font-display);
-  text-transform: uppercase;
-  letter-spacing: 0.03em;
-  font-size: var(--fs-title);
-  color: var(--enamel);
+.emptyWrap {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-6);
+}
+.empty {
+  color: var(--slate);
+  font-size: var(--fs-arm);
+  text-align: center;
+  max-width: 32ch;
+  margin: 0;
 }
 .preview {
   display: flex;

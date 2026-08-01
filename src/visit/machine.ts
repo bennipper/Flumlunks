@@ -1,15 +1,15 @@
 /**
- * Visit state machine (BUILD.md §8).
+ * The "Today" visit (BUILD.md §8, revised).
  *
- *   IDLE ──startVisit──▶ ACTIVE ──endVisit──▶ COMPOSING ──▶ COMPLETE
+ * There is no session ceremony any more: the child drives everything by posting
+ * cards into Bolo, so the parent never "starts" or "ends" a day. Instead the app
+ * keeps an ambient Today that collects badges, photos and learned lines as cards are
+ * played, and rolls over to a fresh one on a new calendar day. The certificate is
+ * produced on demand from Today, not gated behind an "End the day" step.
  *
- * That's it. No exhibit selection, no positioning, no per-exhibit states. The card
- * drives everything and the beat engine owns its own sub-state. This module holds
- * the Visit shape and pure transition helpers; the Zustand store (src/store.ts)
- * wires them to persistence.
+ * Today is still resumable across a page reload (it is persisted), and still holds no
+ * child identifier beyond an optional first name.
  */
-
-export type VisitPhase = "idle" | "active" | "composing" | "complete";
 
 export type PlayedCard = { cardId: string; beatsHeard: string[]; at: string };
 export type VisitPhoto = {
@@ -21,11 +21,10 @@ export type VisitPhoto = {
 
 export type Visit = {
   id: string;
-  packId: string;
-  packVersion: string;
+  /** Calendar day this Today belongs to, YYYY-MM-DD (local). */
+  day: string;
   childFirstName?: string;
   startedAt: string;
-  endedAt?: string;
   cardsPlayed: PlayedCard[];
   photos: VisitPhoto[];
   badges: string[];
@@ -40,15 +39,18 @@ function uid(): string {
   return `v_${Date.now()}_${Math.random().toString(36).slice(2, 10)}`;
 }
 
-export function newVisit(args: {
-  packId: string;
-  packVersion: string;
-  childFirstName?: string;
-}): Visit {
+/** Local calendar day key, e.g. "2026-08-01". */
+export function dayKey(date = new Date()): string {
+  const y = date.getFullYear();
+  const m = `${date.getMonth() + 1}`.padStart(2, "0");
+  const d = `${date.getDate()}`.padStart(2, "0");
+  return `${y}-${m}-${d}`;
+}
+
+export function newVisit(args: { childFirstName?: string; day?: string }): Visit {
   return {
     id: uid(),
-    packId: args.packId,
-    packVersion: args.packVersion,
+    day: args.day ?? dayKey(),
     childFirstName: args.childFirstName?.trim() || undefined,
     startedAt: new Date().toISOString(),
     cardsPlayed: [],
@@ -56,14 +58,4 @@ export function newVisit(args: {
     badges: [],
     learned: [],
   };
-}
-
-export function canTransition(from: VisitPhase, to: VisitPhase): boolean {
-  const allowed: Record<VisitPhase, VisitPhase[]> = {
-    idle: ["active"],
-    active: ["composing"],
-    composing: ["complete"],
-    complete: ["idle"],
-  };
-  return allowed[from].includes(to);
 }
